@@ -1,3 +1,5 @@
+@use "Variables" as *
+
 .add_product
   display: flex
   flex-direction: column
@@ -14,34 +16,46 @@
       align-items: center
       display: flex
       justify-content: space-between
-      padding: 20px
+      padding: 25px
       margin: .3em
-      background-color: lightgrey
+      background-color: $secondary-color
       font-size: 30px
       color: white
       p
         margin-left: 30px
       .item_remover
-        border-radius: .8em
         color: white
         background-color: red
-        padding: 15px
+        padding: 10px
         font-weight: bold
-        font-size: 18px
+        border: none
+        box-shadow: .1em .15em black
+        font-size: 13px
+        &:hover
+          cursor: pointer
+        &:active
+          box-shadow: none
+          transform: translate(.1em, .15em)
   .product_form
     display: flex
     flex-direction: row
     padding-top: 20px
     .product_name_input
+      color: white
+      background-color: transparent
       flex-grow: 1
       margin: 0
       padding-bottom:8px 
       padding-top:8px
-      border: 2px solid rgba(0, 0, 0, .2)
-      padding-left: 1em
-      border-radius: 100em
+      border: none
+      border-bottom: 2px solid $secondary-color
       font-size: 18px
+      &:focus
+        outline: none
+        caret-color: white
   .add_product_button
+    font-weight: bolder
+    color: $secondary-color
     margin-left: 10px
     padding: 10px
     border-radius: 100em
