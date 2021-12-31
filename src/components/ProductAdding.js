@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
+import ContentEditable from 'react-contenteditable';
 
 class ProductAdding extends Component {
   constructor(){
     super();
+    //Configurando o contentEditable
+    this.contenteditable = React.createRef()
+
     this.state = {
       product:{
         productName:'',
         productKey: 0,
-        productPrice: 0
+        productPrice: 0,
+        productQtd: 0
       },
       buyList:[],
     };
 
+    //Variáveis globais
     this.finalBuyList
 
     this.addItems = this.addItems.bind(this)
@@ -25,7 +31,8 @@ class ProductAdding extends Component {
     this.setState({product:{
       productName: name,
       productKey: key,
-      productPrice: price
+      productPrice: price,
+      productQtd: 0
     }})
   }
 
@@ -33,8 +40,37 @@ class ProductAdding extends Component {
     this.finalBuyList = this.state.buyList.map(elemento => {
       return(
         <li key={elemento.productKey} className='listItem' productkey={elemento.productKey}>
-          <p>{elemento.productName}</p>
-          <button className='item_remover' id={elemento.productKey} onClick={this.removeItem}>X</button>
+          <p className='product_name'>{elemento.productName}</p>
+          <button className='item_remover' id={elemento.productKey} onClick={this.removeItem}>{"\u2716"}</button>
+          <div className='quantidade'>
+            <p className='quantidade_produto'>{elemento.productQtd}</p>
+            <div className='buttons'>
+              <p className='plus' onClick={e =>{
+                elemento.productQtd++
+                document.querySelector(".quantidade_produto").innerText = elemento.productQtd
+              }}>{"\u02C4"}</p>
+              <p className='minus' onClick={e =>{
+                elemento.productQtd--
+                document.querySelector(".quantidade_produto").innerText = elemento.productQtd
+              }}>{"\u02C5"}</p>
+            </div>
+          </div>
+          <div className='price'>
+            <p className='R$'>R$</p>
+            <ContentEditable
+              innerRef={this.contenteditable}
+              html={`<span>${elemento.productPrice}</span>`}
+              disabled={false}
+              onKeyDown={e=>{
+                if(e.key === 'Enter'){
+                  e.preventDefault()
+                  elemento.productPrice = e.target.innerText
+                  console.log(this.state.buyList)
+                }
+                e.key == 'Enter' ? e.preventDefault() : ""
+              }}
+            />
+          </div>
         </li>
       )
     })    
@@ -78,7 +114,7 @@ class ProductAdding extends Component {
           <input className="product_name_input" type="text" value={this.state.product.productName} onChange={this.handleNameChange}/>
           <button className='add_product_button' onClick={this.addItems}>ADICIONAR ITEM</button>
         </form>
-          <ul>
+          <ul className='rendered_buy_list'>
             {this.finalBuyList}
           </ul>
       </div>

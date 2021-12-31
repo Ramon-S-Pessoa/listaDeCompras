@@ -1,45 +1,84 @@
 @use "Variables" as *
+@use "mixins"
 
 .add_product
   display: flex
   flex-direction: column
-  align-items: left
-  width: 40vw
+  align-items: center
   margin-left: auto
+  width: 90vw
   margin-right: auto
-  ul
+  .rendered_buy_list
     list-style: none
     margin-top: 1.5em
+    justify-content: center
     display: flex
-    flex-direction: column
+    flex-wrap: wrap
+    gap: 2em
     .listItem
-      align-items: center
+      font-family: 'Pushster', cursive
+      border-radius: 15px
       display: flex
-      justify-content: space-between
+      position: relative
+      flex-direction: column
+      gap: 20px
+      width: 300px
+      text-align: center
+      justify-content: center
       padding: 25px
-      margin: .3em
       background-color: $secondary-color
-      font-size: 30px
       color: white
-      p
-        margin-left: 30px
+      .product_name
+        font-size: 30px
+        max-width: 100%
+        word-wrap: break-word
+      .quantidade
+        position: absolute
+        display: flex
+        align-items: center
+        flex-direction: column
+        font-size: 25px
+        justify-content: center
+        .buttons
+          display: flex
+          // top: -40px
+          flex-direction: column
+          position: absolute
+          gap: 18px
+          .plus
+            @include mixins.qtd_buttons
+          .minus
+            @include mixins.qtd_buttons
+      .price
+        font-size: clamp(20px, 30px, 35px)
+        align-self: center
+        display: flex
+        flex-direction: row
+        background-color: transparent
+        outline: none
+        div:focus-visible
+          border: none
+          outline: none
       .item_remover
-        color: white
-        background-color: red
-        padding: 10px
-        font-weight: bold
+        position: absolute
+        top: 5px
+        right: 5px
+        width: 30px
+        height: 30px
+        color: grey
+        background-color: transparent
+        font-weight: lighter
+        text-align: center
         border: none
-        box-shadow: .1em .15em black
-        font-size: 13px
+        // font-size: 12pt
         &:hover
           cursor: pointer
-        &:active
-          box-shadow: none
-          transform: translate(.1em, .15em)
+          transform: scale(1.1)
   .product_form
     display: flex
     flex-direction: row
     padding-top: 20px
+    width: 40%
     .product_name_input
       color: white
       background-color: transparent
