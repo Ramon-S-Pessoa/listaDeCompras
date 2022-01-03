@@ -14,6 +14,15 @@ export default function BuildList(){
 
   const [buyList, setBuyList] = useState([])
   const [builtList, setBuiltList] = useState([])
+  const [fullPrice, setFullPrice] = useState(0)
+
+  const handleFullPrice = () =>{
+    let total = buyList.reduce((total, current)=>{
+      return total + (current.price * current.quantidy)
+    }, 0)
+
+    setFullPrice(total)
+  }
 
   const productChange = (name, price, quantidy, key) =>{
     setProduct({
@@ -54,15 +63,20 @@ export default function BuildList(){
           </div>
           <div className="price">
             <p className="R$">R$</p>
-            <ContentEditable 
+            <ContentEditable
+              inputMode="tel"
               innerRef={contentEditable}
               html={`<span>${element.price}</span>`}
               disabled={false}
               onKeyDown={e=>{
                 if(e.key === "Enter"){
-                  e.preventDefault()
                   testList[element.key].price = Number(e.target.innerText.replace(/,/g, '.'))
                   setBuyList([...testList])
+                }
+              }}
+              onKeyPress={e=>{
+                if (isNaN(e.key) && e.key != "," && e.key != "."){
+                  e.preventDefault()
                 }
               }}
             />
@@ -77,6 +91,9 @@ export default function BuildList(){
 //Constrói o Array de li's somente quando há alguma alteração na lista de compras
   useEffect(()=>{
     buildList()
+    if(buyList.length != 0){
+      handleFullPrice()
+    }
   }, [buyList])
 
   return(
@@ -92,6 +109,13 @@ export default function BuildList(){
         </form>
           <ul className='rendered_buy_list'>
             {builtList}
+            <li key="precoTotal" className="listItem">
+              <p className="product_name">Total</p>
+              <div className="price">
+                <p className="R$">R$</p>
+                <span>{fullPrice}</span>
+              </div>
+            </li>
           </ul>
       </div>
   )
