@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ContentEditable from "react-contenteditable";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 
 export default function BuildList(){
 
@@ -24,39 +26,43 @@ export default function BuildList(){
     setFullPrice(total)
   }
 
-  const productChange = (name, price, quantidy, key) =>{
+  const productChange = (name, price, quantidy) =>{
     setProduct({
       name: name,
       price: price,
-      quantidy: quantidy,
-      key: key
+      quantidy: quantidy
     })
   }
 
   const addItemHandler = () =>{
     if(product.name != ""){ 
       setBuyList([...buyList, product])
-      productChange("", product.price, product.quantidy, product.key + 1)
+      productChange("", product.price, product.quantidy)
     }
   }
 
   const buildList = () =>{
     let testList = buyList
     let list = testList.map(element =>{
+      let elementIndex = buyList.indexOf(element)
       return(
-        <li key={element.key} className="listItem">
+        <li key={elementIndex} className="listItem">
+          <FontAwesomeIcon icon={faTrashAlt} size="6x" fixedWidth className="far fa-trash-alt item_remover" onClick={e=>{
+            e.preventDefault()
+            
+            testList.splice(elementIndex, 1)
+            setBuyList([...testList])
+          }}/>
           <p className="product_name">{element.name}</p>
           <div className="quantidade">
             <p className="quantidade_produto">{element.quantidy}</p>
             <div className="buttons">
               <button className="plus" onClick={e=>{
-                testList[element.key].quantidy = element.quantidy + 1
-                console.log(testList[element.key])
+                testList[elementIndex].quantidy = element.quantidy + 1 
                 setBuyList([...testList])
               }}>+</button>
               <button className="minus" onClick={e=>{
-                testList[element.key].quantidy = element.quantidy - 1
-                console.log(testList[element.key])
+                testList[elementIndex].quantidy = element.quantidy - 1
                 setBuyList([...testList])
               }}>-</button>
             </div>
@@ -70,7 +76,7 @@ export default function BuildList(){
               disabled={false}
               onKeyDown={e=>{
                 if(e.key === "Enter"){
-                  testList[element.key].price = Number(e.target.innerText.replace(/,/g, '.'))
+                  testList[elementIndex].price = Number(e.target.innerText.replace(/,/g, '.'))
                   setBuyList([...testList])
                 }
               }}
@@ -100,7 +106,7 @@ export default function BuildList(){
     <div className='add_product'>
         <form className='product_form'>
           <input className="product_name_input" type="text" value={product.name} onChange={e =>{
-            productChange(e.target.value, product.price, product.quantidy, product.key)
+            productChange(e.target.value, product.price, product.quantidy)
           }} />
           <button className='add_product_button' onClick={e=>{
             e.preventDefault()

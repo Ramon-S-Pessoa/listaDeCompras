@@ -16,10 +16,11 @@
     flex-wrap: wrap
     gap: 2em
     .listItem
+      position: relative
       font-family: 'Pushster', cursive
+      overflow: hidden
       border-radius: 15px
       display: flex
-      position: relative
       flex-direction: column
       gap: 20px
       width: 300px
@@ -34,6 +35,10 @@
         word-wrap: break-word
       .quantidade
         position: absolute
+        height: 100%
+        background-color: $green-button
+        width: 40px
+        left: 0
         display: flex
         align-items: center
         flex-direction: column
@@ -61,19 +66,20 @@
           outline: none
       .item_remover
         position: absolute
-        top: 5px
-        right: 5px
-        width: 30px
-        height: 30px
-        color: grey
-        background-color: transparent
-        font-weight: lighter
-        text-align: center
+        display: flex
+        align-items: center
+        justify-content: center
+        right: 0px
+        font-size: 30px
+        padding: 8px
+        height: 100%
+        color: #eee
+        background-color: #8b0000
         border: none
-        // font-size: 12pt
         &:hover
           cursor: pointer
-          transform: scale(1.1)
+          transform: scale(1.2) translateX(-2.5px)
+          transition: .1s
   .product_form
     display: flex
     flex-direction: row
@@ -100,7 +106,7 @@
     padding: 10px
     border-radius: 100em
     border: 2px solid transparent
-    background-color: #5cb85c
+    background-color: $green-button
     box-shadow: .1em .15em black
     &:hover
       cursor: pointer
